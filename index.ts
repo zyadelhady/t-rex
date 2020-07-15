@@ -7,7 +7,7 @@ let playerScore = 0;
 let speed = 2;
 let score = 0;
 
-let isRunning = true;
+let gameOver = false;
 
 let baseImage1X = 0;
 let baseImage1Y = 0;
@@ -68,7 +68,9 @@ const getRandomInt = (max: number, min: number) => {
 
 window.onload = () => {
   const gameLoop = () => {
-    if (!isRunning) {
+    draw('white', 0, 0, canvas.width, canvas.height);
+
+    if (gameOver) {
       canvasContext.fillStyle = 'grey';
       canvasContext.font = '50px VT323';
       canvasContext.fillText(
@@ -82,14 +84,19 @@ window.onload = () => {
         canvas.height / 2 + 70
       );
 
+      traps = [
+        { x: 800, y: canvas.height - 61 },
+        { x: 1200, y: canvas.height - 61 },
+        { x: 1600, y: canvas.height - 61 },
+      ];
+      score = 0;
+
       canvas.addEventListener('click', () => {
-        score = 0;
-        isRunning = true;
+        gameOver = false;
+        console.log(gameOver);
       });
     } else {
       score++;
-
-      draw('white', 0, 0, canvas.width, canvas.height);
 
       let baseImage = new Image();
       baseImage.src = './dinobackground.png';
@@ -180,7 +187,7 @@ window.onload = () => {
           dinoX <= traps[i].x + 40 &&
           dinoY >= traps[i].y - 40
         ) {
-          isRunning = false;
+          gameOver = true;
         }
       }
     }
